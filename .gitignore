@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# User uploads and private files
+uploads/*
+!uploads/.gitkeep
+
+# AI model caches
+.cache/
+huggingface/
+models/
+
+# IDE and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Backups
+backups/
+
+# Temporary setup scripts
+check_env.py
+fix_logout.py
+fix_logout_templates.py
+
+# Local template backups
+app/templates_backup/

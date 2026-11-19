@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verification Dashboard | CivicHazard AI</title>
+<style>
+:root{--green:#87A96B;--brown:#5A3E2B;--orange:#D5851F;--bg:#F5F6F0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Segoe UI,Arial;color:var(--brown)}
+nav{background:var(--brown);color:white;padding:20px 6%;display:flex;justify-content:space-between}
+nav a{color:white;text-decoration:none}
+main{max-width:1200px;margin:auto;padding:35px 5%}
+.card{background:white;padding:22px;border-radius:13px;margin:18px 0}
+table{width:100%;border-collapse:collapse}
+td,th{text-align:left;padding:14px;border-bottom:1px solid #eee}
+th{background:#edf3e8}
+.btn{background:var(--orange);color:var(--brown);padding:9px 14px;border-radius:7px;text-decoration:none;font-weight:700}
+.empty{text-align:center;padding:30px;color:#81776d}
+@media(max-width:700px){table{font-size:12px}td,th{padding:8px}}
+</style>
+</head>
+<body>
+<nav>
+<strong>CIVICHAZARD AI | VERIFICATION</strong>
+<form method="POST" action="{{ url_for('citizen.logout') }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button type="submit">Logout</button>
+</form>
+</nav>
+<main>
+<h1>Verification Dashboard</h1>
+<p>Review completed civic work before approving complaint resolution.</p>
+<div class="card">
+<h2>Complaints Awaiting Verification</h2>
+{% if reports %}
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Complaint ID</th><th>Category</th><th>Department</th><th>Submitted</th><th>Review</th></tr></thead>
+<tbody>
+{% for r in reports %}
+<tr>
+<td>{{ r.complaint_id }}</td><td>{{ r.category }}</td><td>{{ r.department }}</td>
+<td>{{ r.updated_at.strftime('%d-%m-%Y') }}</td>
+<td><a class="btn" href="{{ url_for('verification.review_report',report_id=r.id) }}">Review Evidence</a></td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+{% else %}
+<div class="empty">There are no complaints awaiting verification.</div>
+{% endif %}
+</div>
+</main>
+</body>
+</html>

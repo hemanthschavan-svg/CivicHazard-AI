@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Citizen Dashboard | CivicHazard AI</title>
+<style>
+body{margin:0;background:#f3f5f8;font-family:Arial;color:#17243a}
+nav{background:#101c32;color:white;padding:20px 6%;display:flex;justify-content:space-between}
+main{padding:35px 7%}
+a,button{background:#ffb52e;padding:12px 18px;border-radius:5px;text-decoration:none;color:#101c32;font-weight:bold}
+.card{background:white;padding:22px;margin:15px 0;border-radius:10px}
+table{width:100%;border-collapse:collapse;background:white}
+td,th{text-align:left;padding:14px;border-bottom:1px solid #ddd}
+@media(max-width:650px){table{font-size:12px}td,th{padding:7px}}
+</style>
+</head>
+<body>
+<nav>
+<strong>CIVICHAZARD AI</strong>
+<form method="POST" action="{{ url_for('citizen.logout') }}" style="display:inline;">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button type="submit">Logout</button>
+</form>
+</nav>
+<main>
+<h1>Welcome, {{ current_user.full_name }}</h1>
+<p>Your civic complaint dashboard.</p>
+
+<div class="card">
+<h2>Report a Civic Issue</h2>
+<p>Help improve your community by reporting a civic problem.</p>
+<a href="/citizen/report">+ Submit New Complaint</a>
+</div>
+
+<h2>My Complaints</h2>
+{% if reports %}
+<table>
+<tr><th>Complaint ID</th><th>Category</th><th>Department</th><th>Status</th><th>Date</th><th>Track</th></tr>
+{% for r in reports %}
+<tr>
+<td>{{ r.complaint_id }}</td>
+<td>{{ r.category }}</td>
+<td>{{ r.department }}</td>
+<td>{{ r.status }}</td>
+<td>{{ r.created_at.strftime('%d-%m-%Y') }}</td><td><a href="{{ url_for('citizen.track_report',report_id=r.id) }}">View Details</a></td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<div class="card">You have not submitted any complaints yet.</div>
+{% endif %}
+</main>
+</body>
+</html>
+

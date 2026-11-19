@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard | CivicHazard AI</title>
+<style>
+:root{--green:#87A96B;--brown:#5A3E2B;--orange:#D5851F;--bg:#F5F6F0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Segoe UI,Arial;color:var(--brown)}
+nav{background:var(--brown);color:white;padding:20px 6%;display:flex;justify-content:space-between}
+nav a{color:white;text-decoration:none}
+main{max-width:1400px;margin:auto;padding:35px 5%}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card{background:white;padding:20px;border-radius:12px;margin:16px 0;box-shadow:0 4px 18px #00000008}
+.stat strong{display:block;font-size:29px;color:var(--green);margin-top:8px}
+table{width:100%;border-collapse:collapse}
+td,th{text-align:left;padding:12px;border-bottom:1px solid #eee}
+th{background:#edf3e8}
+select{padding:8px;border:1px solid #ddd;border-radius:6px;max-width:180px}
+button{padding:9px 12px;border:0;border-radius:6px;background:var(--orange);color:var(--brown);font-weight:700;cursor:pointer}
+.badge{background:#fff0d8;padding:5px 9px;border-radius:20px;font-size:12px}
+.flash{background:#fff0d8;padding:12px;border-radius:8px;margin:10px 0}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.stats{grid-template-columns:1fr}table{font-size:11px}td,th{padding:7px}}
+</style>
+</head>
+<body>
+<nav>
+<strong>CIVICHAZARD AI | ADMINISTRATION</strong>
+<form method="POST" action="{{ url_for('citizen.logout') }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button type="submit">Logout</button>
+</form>
+</nav>
+<main>
+{% with messages=get_flashed_messages() %}{% for message in messages %}<div class="flash">{{ message }}</div>{% endfor %}{% endwith %}
+<h1>Administration Dashboard</h1>
+<p>Monitor civic complaints, users and department assignments.</p>
+
+<div class="stats">
+<div class="card stat">Total Complaints<strong>{{ total_reports }}</strong></div>
+<div class="card stat">Registered Users<strong>{{ total_users }}</strong></div>
+<div class="card stat">Pending Verification<strong>{{ pending }}</strong></div>
+<div class="card stat">Resolved Complaints<strong>{{ resolved }}</strong></div>
+</div>
+
+<div class="card">
+<h2>Complaint Management</h2>
+{% if reports %}
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Complaint ID</th><th>Category</th><th>Department</th><th>Status</th><th>Assign Officer</th></tr></thead>
+<tbody>
+{% for r in reports %}
+<tr>
+<td>{{ r.complaint_id }}</td><td>{{ r.category }}</td><td>{{ r.department }}</td>
+<td><span class="badge">{{ r.status }}</span></td>
+<td>
+<form method="POST" action="{{ url_for('admin.assign_report',report_id=r.id) }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<select name="officer_id" required>
+<option value="">Choose officer</option>
+{% for officer in officers %}
+{% if officer.department_id == department_ids.get(r.department) %}
+<option value="{{ officer.id }}" {% if r.assigned_officer_id == officer.id %}selected{% endif %}>
+{{ officer.full_name }}
+</option>
+{% endif %}
+{% endfor %}
+</select>
+<button type="submit">Assign</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+{% else %}
+<p>No complaints have been submitted yet.</p>
+{% endif %}
+</div>
+
+<div class="card">
+<h2>User Management</h2>
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Account Status</th><th>Action</th></tr></thead>
+<tbody>
+{% for user in users %}
+<tr>
+<td>{{ user.full_name }}</td><td>{{ user.email }}</td><td>{{ user.role }}</td>
+<td>{{ 'Active' if user.is_active else 'Inactive' }}</td>
+<td>
+<form method="POST" action="{{ url_for('admin.toggle_user',user_id=user.id) }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button type="submit">{{ 'Deactivate' if user.is_active else 'Activate' }}</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+</div>
+</main>
+</body>
+</html>

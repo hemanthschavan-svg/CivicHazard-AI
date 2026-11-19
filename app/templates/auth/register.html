@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Citizen Registration | CivicHazard AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:Arial;background:#101c32;display:grid;place-items:center;min-height:100vh;margin:0}
+.card{background:white;padding:35px;border-radius:12px;width:min(360px,85%)}
+input{width:100%;padding:12px;margin:10px 0;box-sizing:border-box}
+button{width:100%;padding:13px;background:#ffb52e;border:0;font-weight:bold;cursor:pointer}
+a{color:#244a70}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>Create Citizen Account</h2>
+{% with messages = get_flashed_messages() %}
+{% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endwith %}
+<form method="POST">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<input name="full_name" placeholder="Full name" required>
+<input type="email" name="email" placeholder="Email address" required>
+<input type="password" name="password" placeholder="Password (8+ characters)" minlength="8" required>
+<button type="submit">Create Account</button>
+</form>
+<p>Already registered? <a href="/login">Login here</a></p>
+</div>
+</body>
+</html>

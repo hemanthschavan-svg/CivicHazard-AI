@@ -1,0 +1,478 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5A3E2B">
+<title>CivicHazard AI | SENTINELS</title>
+
+<style>
+:root {
+    --navy: #5A3E2B;
+    --navy2: #87A96B;
+    --orange: #D5851F;
+    --bg: #F5F6F0;
+    --text: #5A3E2B;
+    --muted: #756B60;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+a { text-decoration: none; }
+
+.navbar {
+    background: var(--navy);
+    color: white;
+    padding: 17px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 850;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+
+.logo span { color: var(--orange); }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: #F1EDE5;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.nav-links a:hover { color: var(--orange); }
+
+.nav-button {
+    background: var(--orange);
+    color: var(--navy) !important;
+    padding: 11px 17px;
+    border-radius: 8px;
+}
+
+.menu-button {
+    display: none;
+    background: transparent;
+    color: white;
+    font-size: 25px;
+    padding: 3px 8px;
+}
+
+.hero {
+    background: linear-gradient(115deg, #5A3E2B, #87A96B);
+    color: white;
+    padding: 95px 8%;
+    min-height: 475px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content { max-width: 760px; }
+
+.hero-tag {
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(36px, 5vw, 57px);
+    line-height: 1.12;
+    margin: 0 0 22px;
+}
+
+.hero p {
+    font-size: 17px;
+    color: #E8EBDD;
+    max-width: 650px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.primary-button {
+    display: inline-block;
+    background: var(--orange);
+    color: #17243a;
+    padding: 15px 24px;
+    border-radius: 9px;
+    font-weight: 800;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.primary-button:hover {
+    background: #E4A64D;
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    display: inline-block;
+    border: 1px solid #91a6c0;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 9px;
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.section {
+    padding: 65px 7%;
+    max-width: 1500px;
+    margin: auto;
+}
+
+.section-heading {
+    margin-bottom: 30px;
+}
+
+.section-heading h2 {
+    font-size: 28px;
+    margin: 0 0 9px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #e8edf4;
+    box-shadow: 0 5px 20px rgba(0,0,0,.035);
+    transition: .2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(16,28,50,.09);
+}
+
+.card-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: #fff3d9;
+    font-size: 27px;
+    margin-bottom: 19px;
+}
+
+.card h3 {
+    font-size: 17px;
+    margin: 0 0 10px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.workflow {
+    background: white;
+    padding: 55px 7%;
+}
+
+.workflow-inner {
+    max-width: 1300px;
+    margin: auto;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.step {
+    padding: 20px;
+    border-left: 3px solid var(--orange);
+    background: #f8faff;
+    border-radius: 0 12px 12px 0;
+}
+
+.step-number {
+    font-weight: 900;
+    color: #d68c00;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.step h3 {
+    font-size: 15px;
+    margin: 0 0 8px;
+}
+
+.step p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.cta {
+    margin: 55px 7%;
+    padding: 42px 30px;
+    background: var(--navy);
+    color: white;
+    border-radius: 17px;
+    text-align: center;
+}
+
+.cta h2 { margin: 0 0 12px; }
+
+.cta p {
+    color: #E8EBDD;
+    margin-bottom: 23px;
+    font-size: 14px;
+}
+
+footer {
+    background: var(--navy);
+    color: #d4deeb;
+    padding: 27px 6%;
+    text-align: center;
+    font-size: 13px;
+}
+
+@media(max-width: 950px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 700px) {
+    .navbar { padding: 15px 5%; }
+
+    .menu-button { display: block; }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--navy);
+        padding: 20px 6%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 19px;
+    }
+
+    .nav-links.open { display: flex; }
+
+    .nav-links a { font-size: 15px; }
+
+    .nav-button { text-align: center; }
+
+    .hero {
+        padding: 65px 7%;
+        min-height: 420px;
+    }
+
+    .hero p { font-size: 15px; }
+
+    .secondary-button {
+        margin: 12px 0 0;
+        display: inline-block;
+    }
+
+    .section { padding: 45px 6%; }
+
+    .cards { grid-template-columns: 1fr; }
+
+    .steps { grid-template-columns: 1fr; }
+
+    .cta { margin: 35px 5%; padding: 35px 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="/" class="logo" style="color:white">
+        CIVICHAZARD <span>AI</span>
+    </a>
+
+    <button class="menu-button" onclick="toggleMenu()" aria-label="Toggle navigation">
+        ☰
+    </button>
+
+    <div class="nav-links" id="navLinks">
+        <a href="/">Home</a>
+
+        {% if current_user.is_authenticated %}
+            <a href="/citizen/dashboard">My Reports</a>
+            <a href="/citizen/report">Report Issue</a>
+            <form method="POST" action="{{ url_for('citizen.logout') }}" style="display:inline;">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button type="submit" class="nav-button">Logout</button>
+</form>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register" class="nav-button">Get Started</a>
+        {% endif %}
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-tag">A SMARTER CITY STARTS WITH YOU</div>
+
+        <h1>Make Your City Safer. One Report at a Time.</h1>
+
+        <p>
+            An AI-powered civic issue reporting platform designed
+            to help citizens report problems, monitor progress
+            and build cleaner, safer communities.
+        </p>
+
+        {% if current_user.is_authenticated %}
+            <a href="/citizen/report" class="primary-button">
+                + Report a Civic Issue
+            </a>
+            <a href="/citizen/dashboard" class="secondary-button">
+                View My Reports
+            </a>
+        {% else %}
+            <a href="/register" class="primary-button">
+                + Report a Civic Issue
+            </a>
+            <a href="/login" class="secondary-button">
+                Track Your Reports
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section" id="issues">
+    <div class="section-heading">
+        <h2>What Can You Report?</h2>
+        <p>Identify a civic issue and help the concerned department take action.</p>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <div class="card-icon">🛣️</div>
+            <h3>Road Damage</h3>
+            <p>Report potholes, damaged roads, broken surfaces and dangerous cracks.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">💡</div>
+            <h3>Streetlight Failure</h3>
+            <p>Report broken streetlights and dark roads that need attention.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🌊</div>
+            <h3>Drainage Problems</h3>
+            <p>Report blocked drains, overflowing sewage and waterlogging.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🗑️</div>
+            <h3>Garbage Accumulation</h3>
+            <p>Report roadside waste, overflowing bins and sanitation problems.</p>
+        </div>
+    </div>
+</section>
+
+<section class="workflow">
+    <div class="workflow-inner">
+        <div class="section-heading">
+            <h2>How CivicHazard AI Works</h2>
+            <p>A transparent process from reporting to resolution.</p>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">STEP 01</div>
+                <h3>Report the Issue</h3>
+                <p>Upload a photograph, describe the problem and share its location.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">STEP 02</div>
+                <h3>AI Image Analysis</h3>
+                <p>AI examines the photograph to identify supported civic problems.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">STEP 03</div>
+                <h3>Department Action</h3>
+                <p>The complaint is routed to the responsible department for action.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">STEP 04</div>
+                <h3>Resolution Verification</h3>
+                <p>Completion evidence is checked before the complaint is marked resolved.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <h2>Your Report Can Make a Difference.</h2>
+    <p>Help your community by reporting civic problems responsibly.</p>
+
+    {% if current_user.is_authenticated %}
+        <a href="/citizen/report" class="primary-button">Report an Issue</a>
+    {% else %}
+        <a href="/register" class="primary-button">Join CivicHazard AI</a>
+    {% endif %}
+</section>
+
+<footer>
+    CivicHazard AI | Developed by Team SENTINELS
+    <br><br>
+    Building safer and cleaner communities through technology.
+</footer>
+
+<script>
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("open");
+}
+</script>
+
+</body>
+</html>
+

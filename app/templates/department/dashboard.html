@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Department Dashboard | CivicHazard AI</title>
+<style>
+:root{--green:#87A96B;--brown:#5A3E2B;--orange:#D5851F;--bg:#F5F6F0}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial;background:var(--bg);color:var(--brown)}
+nav{background:var(--brown);color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center}
+nav a{color:white;text-decoration:none}
+main{max-width:1250px;margin:auto;padding:35px 5%}
+h1{margin-bottom:5px}
+.subtitle{color:#81776d}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:25px 0}
+.card{background:white;padding:22px;border-radius:13px;box-shadow:0 4px 18px #00000008;margin-bottom:18px}
+.stat strong{font-size:28px;display:block;color:var(--green)}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{text-align:left;padding:14px;border-bottom:1px solid #eee}
+th{background:#f0f3eb}
+.btn{display:inline-block;background:var(--orange);color:var(--brown);padding:9px 14px;border-radius:7px;text-decoration:none;font-weight:700}
+.badge{background:#fff0d8;padding:6px 10px;border-radius:20px;font-size:12px}
+.empty{padding:25px;text-align:center;color:#81776d}
+@media(max-width:700px){.stats{grid-template-columns:1fr}table{font-size:12px}th,td{padding:8px}}
+</style>
+</head>
+<body>
+<nav>
+<strong>CIVICHAZARD AI | DEPARTMENT</strong>
+<form method="POST" action="{{ url_for('citizen.logout') }}" style="display:inline;">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button type="submit">Logout</button>
+</form>
+</nav>
+<main>
+<h1>Department Dashboard</h1>
+<p class="subtitle">Welcome, {{ current_user.full_name }}. Manage your assigned civic complaints.</p>
+
+<div class="stats">
+<div class="card stat"><span>Assigned Complaints</span><strong>{{ reports|length }}</strong></div>
+<div class="card stat"><span>In Progress</span><strong>{{ reports|selectattr('status','equalto','In Progress')|list|length }}</strong></div>
+<div class="card stat"><span>Awaiting Verification</span><strong>{{ reports|selectattr('status','equalto','Pending Verification')|list|length }}</strong></div>
+</div>
+
+<div class="card">
+<h2>Assigned Complaints</h2>
+{% if reports %}
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>Complaint ID</th><th>Issue</th><th>Department</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead>
+<tbody>
+{% for r in reports %}
+<tr>
+<td>{{ r.complaint_id }}</td>
+<td>{{ r.category }}</td>
+<td>{{ r.department }}</td>
+<td><span class="badge">{{ r.status }}</span></td>
+<td>{{ r.created_at.strftime('%d-%m-%Y') }}</td>
+<td><a class="btn" href="{{ url_for('department.update_report',report_id=r.id) }}">Open</a></td>
+</tr>
+{% endfor %}
+</tbody></table>
+</div>
+{% else %}
+<div class="empty">No complaints have been assigned to your account yet.</div>
+{% endif %}
+</div>
+</main>
+</body>
+</html>
